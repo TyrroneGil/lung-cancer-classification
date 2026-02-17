@@ -10,7 +10,7 @@ import { useRef,useState } from "react";
 
 
 export default function Home() {
-const [image,setImage] = useState(null)
+const [image,setImage] = useState<string|Blob>('')
 const [previewImage, setPreviewImage] = useState('')
 const handleImageChange = (event:any)=>{
     const file = event?.target.files[0];
@@ -20,13 +20,19 @@ const handleImageChange = (event:any)=>{
     }   
 }
 
+const handleSubmit = async()=>{
+    const formData = new FormData();
+    formData.append("image",image);
+    const result = await fetch('http://localhost:8000/uploadImage',{
+      method:'POST',
+      body:formData
+    })
+    const response = await result.json()
+    console.log(response)
+}
+
   // 2. Function to handle the button click
 
-
-const handleSubmit = ()=>{
-
-}
-const hiddenFileInput = useRef(null);
 
 
     return(
@@ -43,14 +49,13 @@ const hiddenFileInput = useRef(null);
                             <img src={previewImage == "" ? 'defualt-image.png' : previewImage} alt="" />                     
                         </div>
                         
-                        {image === null  ? (
+                        {image === ''  ? (
                             <>
-                            <button className="bg-blue-500 border-gray-50 hover:bg-blue-100 hover:text-black text-white rounded-[15px] w-[150px] h-[50px] mt-2" >Upload Image</button>
-                             <input ref={hiddenFileInput} style={{ display: 'none' }}  type="file" accept="image/*" onChange={handleImageChange} />
+                             <input  className="file:border file:p-1 file:rounded-full file:bg-blue-400 file:text-white rounded-full border-blue-400 hover:file:bg-blue-200 hover:file:text-black   border p-1 m-1"  type="file" accept="image/*" onChange={handleImageChange} />
                             </>
                        
                         ) : (
-                        <Button className="bg-blue-500 border-gray-50 hover:bg-blue-100 hover:text-black text-white rounded-[15px] w-[100px] h-[50px] mt-2" onClick={()=>{}} >
+                        <Button className="bg-blue-500 border-gray-50 hover:bg-blue-100 hover:text-black text-white rounded-[15px] w-[100px] h-[50px] mt-2" onClick={()=>{handleSubmit()}} >
                             Submit
                         </Button>
                         )}

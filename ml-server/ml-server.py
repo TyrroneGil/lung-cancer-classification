@@ -1,31 +1,35 @@
-from fastapi import FastAPI
-from database import get_connection
-import sqlite3
+import os
+from fastapi import FastAPI, File, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
 
+origins = ["http://localhost:5173"]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-@app.get("/history")
-def get_history():
-    conn = get_connection()
-    cursor = conn.cursor()
+UPLOAD_FOLDER = "uploads"
 
-    cursor.execute("SELECT * FROM history")
-    rows = cursor.fetchall()
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-    conn.close()
+@app.post("/uploadImage")
+async def uploadImage(image: UploadFile = File(...)):
+    
+    file_path = os.path.join(UPLOAD_FOLDER, image.filename)
 
-    return [dict(row) for row in rows]
+    with open(file_path, "wb") as f:
+        contents = await image.read()
+        f.write(contents)
 
-@app.get('/addHistory')
-def insert_history(image="hello", classification="hello", accuracy="hello", result="hello"):
-    conn = sqlite3.connect("database.db")
-    cursor = conn.cursor()
+    print("Saved as:", file_path)
 
-    cursor.execute("""
-        INSERT INTO history (image, classification, accuracy, result)
-        VALUES (?, ?, ?, ?)
-    """, (image, classification, accuracy, result))
-
-    conn.commit()
-    conn.close()
+    return {
+        "filename": image.filename,
+        "saved_path": file_path
+    }
