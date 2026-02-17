@@ -1,0 +1,4 @@
+Image,Prediction,Accuracy,IsCorrect
+00006517_007.png,Nodule,45.44,True
+00001836_128.png,Pneumonia,33.23,True
+00001836_082.png,Nodule,43.66,False
