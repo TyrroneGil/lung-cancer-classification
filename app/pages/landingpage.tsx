@@ -34,8 +34,14 @@ export default function LandingPage(){
        
         </div>
 
-         <section className="h-screen w-full bg-white" id="diseases">
-
+         <section className="bg-green-100 flex w-screen h-min-screen items-center justify-center p-20 flex-col" id="diseases">
+            <h1 className="text-5xl text-center font-bold">Common Lung Diseases</h1>
+            <p className="text-2xl text-center">Understanding the different types of lung diseases is crucial for early detection and effective treatment. Here are some of the most common conditions.</p>
+            <div className="card-container grid grid-cols-3 w-full h-min-[80%]" >
+                <div>
+                    
+                </div>
+            </div>
         </section>
 </>
 
