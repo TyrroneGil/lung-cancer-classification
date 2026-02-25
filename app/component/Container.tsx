@@ -9,7 +9,7 @@ const Container:React.FC<ContainerProps> = ({
 
 }) =>{
     return(
-        <div className=" bg-gradient-to-br from-blue-50 to-indigo-100 w-lvw h-lvh flex flex-col">
+        <div className="  w-lvw h-lvh flex flex-col  overflow-y-scroll no-scrollbar scroll-smooth">
             {children}
         </div>
     );
