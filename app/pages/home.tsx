@@ -12,9 +12,7 @@ export default function Home() {
       
       <div className="header">
       <Upload/>
-      </div>
-      <div className="charts w-full h-auto">
-      </div>
+    </div>
     </Container>
   );
 }
